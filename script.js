@@ -1,24 +1,24 @@
 let playerscore = 0;
 let computerscore = 0;
 
-let computerChoice = getComputerChoice();
-console.log(computerChoice);
-
-let playerChoice = getPlayerChoice();
-console.log(playerChoice);
-
-let result = getRoundWinner(playerChoice, computerChoice);
-if(result=="pw"){
-    console.log("You win! " + playerChoice +  " beats " + computerChoice);
-    playerscore++;
+for(let i=0; i<5; i++){
+    console.log("\n");
+    let score = game();
+    if(score=="pw")
+        playerscore++;
+    else if(score=="cw")
+        computerscore++;
+    else{}
 }
-else if(result=="cw"){
-    console.log("You lose! " + computerChoice +  " beats " + playerChoice);
-    computerscore++;
-}
-else{
+
+console.log("\nFinal Score- \nComputer- "+ computerscore + "\nPlayer- "+ playerscore + "\n");
+if(playerscore>computerscore)
+    console.log("Player wins!");
+else if(computerscore>playerscore)
+    console.log("Computer wins!");
+else
     console.log("It's a draw");
-}
+
 
 function getComputerChoice(){
     let choice = Math.floor(Math.random()*3);
@@ -39,10 +39,32 @@ function getPlayerChoice(){
 }
 
 function getRoundWinner(pC, cC){
-    if((pC=="rock" && cC=="Scissors") || (pC=="Scissors" && cC=="Paper") || (pC=="Paper" && cC=="Rock"))
+    if((pC=="Rock" && cC=="Scissors") || (pC=="Scissors" && cC=="Paper") || (pC=="Paper" && cC=="Rock"))
         return "pw";
-    else if((cC=="rock" && pC=="Scissors") || (cC=="Scissors" && pC=="Paper") || (cC=="Paper" && pC=="Rock"))
+    else if((cC=="Rock" && pC=="Scissors") || (cC=="Scissors" && pC=="Paper") || (cC=="Paper" && pC=="Rock"))
         return "cw";
     else
         return "draw";
+}
+
+function game(){
+
+    let playerChoice = getPlayerChoice();
+    console.log(playerChoice);
+
+    let computerChoice = getComputerChoice();
+    console.log(computerChoice);
+
+    let result = getRoundWinner(playerChoice, computerChoice);
+
+    if(result=="pw"){
+        console.log("You win! " + playerChoice +  " beats " + computerChoice);
+    }
+    else if(result=="cw"){
+        console.log("You lose! " + computerChoice +  " beats " + playerChoice);
+    }
+    else{
+        console.log("It's a draw");
+    }
+    return result;
 }

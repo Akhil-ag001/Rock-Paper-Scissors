@@ -1,26 +1,26 @@
-let playerscore = 0;
-let computerscore = 0;
+let playerScore = 0;
+let compScore = 0;
 
-for(let i=0; i<5; i++){
-    console.log("\n");
-    let score = game();
-    if(score=="pw")
-        playerscore++;
-    else if(score=="cw")
-        computerscore++;
-    else{}
-}
+let playerChoice = "";
+let compChoice = "";
+let result = "";
 
-console.log("\nFinal Score- \nComputer- "+ computerscore + "\nPlayer- "+ playerscore + "\n");
-if(playerscore>computerscore)
-    console.log("Player wins!");
-else if(computerscore>playerscore)
-    console.log("Computer wins!");
-else
-    console.log("It's a draw");
+const inputs = document.querySelectorAll('.input');
+const results = document.querySelector('#result');
+const score = document.querySelector('#score');
 
+gameStart();
 
-function getComputerChoice(){
+inputs.forEach((button) => {
+    button.addEventListener('click', (e) =>{
+        playerChoice = button.getAttribute('id');
+        compChoice = getCompChoice();
+        result = getResult(playerChoice, compChoice);
+        displayResult(result);
+    })
+})
+
+function getCompChoice(){
     let choice = Math.floor(Math.random()*3);
     
     if(choice==0)
@@ -31,14 +31,8 @@ function getComputerChoice(){
         return "Scissors";
 }
 
-function getPlayerChoice(){
-    let choice = prompt("Enter your choice- ");
-    choice = choice.toLowerCase();
-    choice = choice.charAt(0).toUpperCase() + choice.slice(1);
-    return choice;
-}
+function getResult(pC, cC){
 
-function getRoundWinner(pC, cC){
     if((pC=="Rock" && cC=="Scissors") || (pC=="Scissors" && cC=="Paper") || (pC=="Paper" && cC=="Rock"))
         return "pw";
     else if((cC=="Rock" && pC=="Scissors") || (cC=="Scissors" && pC=="Paper") || (cC=="Paper" && pC=="Rock"))
@@ -47,24 +41,28 @@ function getRoundWinner(pC, cC){
         return "draw";
 }
 
-function game(){
-
-    let playerChoice = getPlayerChoice();
-    console.log(playerChoice);
-
-    let computerChoice = getComputerChoice();
-    console.log(computerChoice);
-
-    let result = getRoundWinner(playerChoice, computerChoice);
+function displayResult(result){
 
     if(result=="pw"){
-        console.log("You win! " + playerChoice +  " beats " + computerChoice);
+        results.textContent = "You win! " + playerChoice + " beats " + compChoice;
+        playerScore++;
+        score.textContent = playerScore + " - " + compScore;
     }
     else if(result=="cw"){
-        console.log("You lose! " + computerChoice +  " beats " + playerChoice);
+        results.textContent = "You lose! " + compChoice + " beats " + playerChoice;
+        compScore++;
+        score.textContent = playerScore + " - " + compScore;
     }
     else{
-        console.log("It's a draw");
+        results.textContent = "It\'s a draw";
+        score.textContent = playerScore + " - " + compScore;
     }
-    return result;
+}
+
+function gameStart(){
+    compScore = 0;
+    playerScore = 0;
+
+    score.textContent = playerScore + " - " + compScore;
+    results.textContent = "Result will be displayed here";
 }
